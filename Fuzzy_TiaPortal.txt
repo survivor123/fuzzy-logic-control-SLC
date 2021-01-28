@@ -1,0 +1,374 @@
+REGION temperature < 15°C
+IF #T >= 0 AND #T < 15 THEN
+    #a := 1;
+    IF #N >= 0 AND #N < 0.3 THEN
+        #b := 1;
+        #Val := #VB;
+    END_IF;
+    
+    IF #N >= 0.3 AND #N < 0.6 THEN
+        "N_medio"(x := #N,
+                  y => #b);
+        "N_bajo"(x := #N,
+                 y => #c);
+        #alpha1 := MIN(IN1 := #a, IN2 := #b);
+        #alpha2 := MIN(IN1 := #a, IN2 := #c);
+        "DEFUZZY2"(alpha1 := #alpha1,
+                    alpha2 := #alpha2,
+                    y => #Val,
+                    z1 := #VB,
+                    z2 := #VB,
+                    zz := 1);
+    END_IF;
+    
+    IF #N >= 0.6 AND #N < 1.2 THEN
+        "N_medio"(x := #N,
+                  y => #b);
+        #alpha1 := MIN(IN1 := #a, IN2 := #b);
+        "DEFUZZY1"(alpha1 := #alpha1,
+                   y => #Val,
+                   z1 := #VB,
+                    zz := 2);
+    END_IF;
+    
+    IF #N >= 1.2 AND #N < 1.5 THEN
+        "N_medio"(x := #N,
+                  y => #a);
+        "N_alto"(x := #N,
+                 y => #b);
+        #alpha1 := MIN(IN1 := #a, IN2 := #b);
+        #alpha2 := MIN(IN1 := #a, IN2 := #c);
+        "DEFUZZY2"(alpha1 := #alpha1,
+                    alpha2 := #alpha2,
+                    zz:= 3,
+                   y => #Val,
+                    z1 := #VM,
+                    z2 := #VM);
+    END_IF;
+    
+    IF #N >= 1.5 AND #N < 1.8 THEN
+        #b := 1;
+        #Val := #VA;
+    END_IF;
+    
+END_IF;
+END_REGION
+
+
+
+REGION temperature > 15°C & < 30°C
+IF #T >= 15 AND #T < 30 THEN
+    "T_bajo"(x := #T,
+             y => #a);
+    "T_medio"(x := #T,
+              y => #b);
+    
+    IF #N >= 0 AND #N < 0.3 THEN
+        #c := 1;
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #b, IN2 := #c);
+        "DEFUZZY2"(alpha1 := #alpha1,
+                    alpha2 := #alpha2,
+                    zz:=4,
+                   y => #Val,
+                    z1 := #VB,
+                    z2 := #VB);
+    END_IF;
+    
+    IF #N >= 0.3 AND #N < 0.6 THEN
+        "N_medio"(x := #N,
+                  y => #c);
+        "N_bajo"(x := #N,
+                 y => #d);
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #a, IN2 := #d);
+        #alpha3 := MIN(IN1 := #b, IN2 := #c);
+        #alpha4 := MIN(IN1 := #b, IN2 := #d);
+        "DEFUZZY4"(alpha1 := #alpha1,
+                   alpha2 := #alpha2,
+                   alpha3 := #alpha3,
+                   alpha4 := #alpha4,
+                   zz:=5,
+                   y => #Val,
+                   z1 := #VB,
+                   z2 := #VB,
+                   z3 := #VB,
+                   z4 := #VB);
+    END_IF;
+    
+    IF #N >= 0.6 AND #N < 1.2 THEN
+        "N_medio"(x := #N,
+                  y => #c);
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #b, IN2 := #c);
+        "DEFUZZY2"(alpha1 := #alpha1,
+                    alpha2 := #alpha2,
+                    zz:=6,
+                   y => #Val,
+                    z1 := #VB,
+                    z2 := #VB);
+    END_IF;
+    
+    IF #N >= 1.2 AND #N < 1.5 THEN
+        "N_medio"(x := #N,
+                  y => #c);
+        "N_alto"(x := #N,
+                 y => #d);
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #a, IN2 := #d);
+        #alpha3 := MIN(IN1 := #b, IN2 := #c);
+        #alpha4 := MIN(IN1 := #b, IN2 := #d);
+        "DEFUZZY4"(alpha1 := #alpha1,
+                   alpha2 := #alpha2,
+                   alpha3 := #alpha3,
+                   alpha4 := #alpha4,
+                   zz:=7,
+                   y => #Val,
+                   z1 := #VM,
+                   z2 := #VM,
+                   z3 := #VM,
+                   z4 := #VA);
+    END_IF;
+    
+    IF #N >= 1.5 AND #N < 1.8 THEN
+        #c := 1;
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #b, IN2 := #c);
+        "DEFUZZY2"(alpha1 := #alpha1,
+                    alpha2 := #alpha2,
+                    zz:=8,
+                   y => #Val,
+                    z1 := #VA,
+                    z2 := #VA);
+    END_IF;
+    
+END_IF;
+END_REGION
+
+
+
+REGION temperature > 30°C & < 60°C
+IF #T >= 30 AND #T < 60 THEN
+    "T_medio"(x := #T,
+              y => #a);
+    
+    IF #N >= 0 AND #N < 0.3 THEN
+        #c := 1;
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        "DEFUZZY1"(alpha1 := #alpha1,
+                   zz:=9,
+                   y => #Val,
+                   z1 := #VB);
+    END_IF;
+    
+    IF #N >= 0.3 AND #N < 0.6 THEN
+        "N_medio"(x := #N,
+                  y => #c);
+        "N_bajo"(x := #N,
+                 y => #d);
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #a, IN2 := #d);
+        "DEFUZZY2"(alpha1 := #alpha1,
+                   alpha2 := #alpha2,
+                    zz:=10,
+                   y => #Val,
+                    z1 := #VB,
+                    z2 := #VB);
+    END_IF;
+    
+    IF #N >= 0.6 AND #N < 1.2 THEN
+        "N_medio"(x := #N,
+                  y => #c);
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #b, IN2 := #c);
+        "DEFUZZY2"(alpha1 := #alpha1,
+                   alpha2 := #alpha2,
+                    zz:=11,
+                   y => #Val,
+                    z1 := #VB,
+                    z2 := #VB);
+    END_IF;
+    
+    IF #N >= 1.2 AND #N < 1.5 THEN
+        "N_medio"(x := #N,
+                  y => #c);
+        "N_alto"(x := #N,
+                 y => #d);
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #a, IN2 := #d);
+        "DEFUZZY2"(alpha1 := #alpha1,
+                   alpha2 := #alpha2,
+                    zz:=12,
+                   y => #Val,
+                    z1 := #VM,
+                    z2 := #VA);
+    END_IF;
+    
+    IF #N >= 1.5 AND #N < 1.8 THEN
+        #c := 1;
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        "DEFUZZY1"(alpha1 := #alpha1,
+                   zz:=13,
+                   y => #Val,
+                   z1 := #VA);
+    END_IF;
+    
+END_IF;
+END_REGION
+
+
+REGION temperature >  60 °C & < 75°C
+IF #T >= 60 AND #T < 75 THEN
+    "T_medio"(x := #T,
+             y => #a);
+    "T_alto"(x := #T,
+              y => #b);
+    
+    IF #N >= 0 AND #N < 0.3 THEN
+        #c := 1;
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #b, IN2 := #c);
+        "DEFUZZY2"(alpha1 := #alpha1,
+                   alpha2 := #alpha2,
+                    zz:=14,
+                   y => #Val,
+                    z1 := #VB,
+                    z2 := #VB);
+    END_IF;
+    
+    IF #N >= 0.3 AND #N < 0.6 THEN
+        "N_medio"(x := #N,
+                  y => #c);
+        "N_bajo"(x := #N,
+                 y => #d);
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #a, IN2 := #d);
+        #alpha3 := MIN(IN1 := #b, IN2 := #c);
+        #alpha4 := MIN(IN1 := #b, IN2 := #d);
+        "DEFUZZY4"(alpha1 := #alpha1,
+                   alpha2 := #alpha2,
+                   alpha3 := #alpha3,
+                   alpha4 := #alpha4,
+                   zz:=15,
+                   y => #Val,
+                   z1 := #VB,
+                   z2 := #VB,
+                   z3 := #VB,
+                   z4 := #VB);
+    END_IF;
+    
+    IF #N >= 0.6 AND #N < 1.2 THEN
+        "N_medio"(x := #N,
+                  y => #c);
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #b, IN2 := #c);
+        "DEFUZZY2"(alpha1 := #alpha1,
+                    alpha2 := #alpha2,
+                    zz:=16,
+                    y => #Val,
+                    z1 := #VB,
+                    z2 := #VB);
+    END_IF;
+    
+    IF #N >= 1.2 AND #N < 1.5 THEN
+        "N_medio"(x := #N,
+                  y => #c);
+        "N_alto"(x := #N,
+                 y => #d);
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #a, IN2 := #d);
+        #alpha3 := MIN(IN1 := #b, IN2 := #c);
+        #alpha4 := MIN(IN1 := #b, IN2 := #d);
+        "DEFUZZY4"(alpha1 := #alpha1,
+                   alpha2 := #alpha2,
+                   alpha3 := #alpha3,
+                   alpha4 := #alpha4,
+                   zz:=17,
+                   y => #Val,
+                   z1 := #VM,
+                   z2 := #VM,
+                   z3 := #VB,
+                   z4 := #VA);
+    END_IF;
+    
+    IF #N >= 1.5 AND #N < 1.8 THEN
+        #c := 1;
+        #alpha1 := MIN(IN1 := #a, IN2 := #c);
+        #alpha2 := MIN(IN1 := #b, IN2 := #c);
+        "DEFUZZY2"(alpha1 := #alpha1,
+                    alpha2 := #alpha2,
+                    zz:=18,
+                    y => #Val,
+                    z1 := #VA,
+                    z2 := #VA);
+    END_IF;
+    
+END_IF;
+END_REGION
+
+
+REGION temperature > 75 °C
+    IF #T >= 75 AND #T < 90 THEN
+        #a := 1;
+        
+        IF #N >= 0 AND #N < 0.3 THEN
+            #c := 1;
+            #alpha1 := MIN(IN1 := #a, IN2 := #c);
+            "DEFUZZY1"(alpha1 := #alpha1,
+                       zz := 19,
+                       y => #Val,
+                       z1 := #VB);
+        END_IF;
+        
+        IF #N >= 0.3 AND #N < 0.6 THEN
+            "N_medio"(x := #N,
+                      y => #c);
+            "N_bajo"(x := #N,
+                     y => #d);
+            #alpha1 := MIN(IN1 := #a, IN2 := #c);
+            #alpha2 := MIN(IN1 := #a, IN2 := #d);
+            "DEFUZZY2"(alpha1 := #alpha1,
+                       alpha2 := #alpha2,
+                       zz := 20,
+                       y => #Val,
+                       z1 := #VB,
+                       z2 := #VB);
+        END_IF;
+        
+        IF #N >= 0.6 AND #N < 1.2 THEN
+            "N_medio"(x := #N,
+                      y => #c);
+            #alpha1 := MIN(IN1 := #a, IN2 := #c);
+            "DEFUZZY1"(alpha1 := #alpha1,
+                       zz := 21,
+                       y => #Val,
+                       z1 := #VB);
+        END_IF;
+        
+        IF #N >= 1.2 AND #N < 1.5 THEN
+            "N_medio"(x := #N,
+                      y => #c);
+            "N_alto"(x := #N,
+                     y => #d);
+            #alpha1 := MIN(IN1 := #a, IN2 := #c);
+            #alpha2 := MIN(IN1 := #a, IN2 := #d);
+            ;
+            "DEFUZZY2"(alpha1 := #alpha1,
+                       alpha2 := #alpha2,
+                       zz := 22,
+                       y => #Val,
+                       z1 := #VM,
+                       z2 := #VA);
+        END_IF;
+        
+        IF #N >= 1.5 AND #N < 1.8 THEN
+            #c := 1;
+            #alpha1 := MIN(IN1 := #a, IN2 := #c);
+            "DEFUZZY1"(alpha1 := #alpha1,
+                       zz := 23,
+                       y => #Val,
+                       z1 := #VA);
+        END_IF;
+        
+    END_IF;
+END_REGION
